@@ -1,0 +1,16 @@
+app:
+    message: This file is a development configuration
+
+# datasource
+spring: 
+    datasource:
+        url: jdbc:mariadb://localhost:3306/bookstore
+        username: root
+        password: root
+
+    jpa:
+        database-platform: org.hibernate.dialect.MariaDBDialect
+        hibernate.ddl-auto: update
+        properties:
+            hibernate: 
+                show_sql: true
