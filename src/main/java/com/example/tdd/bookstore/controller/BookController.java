@@ -11,9 +11,11 @@ import com.example.tdd.bookstore.controller.dto.BookRequestDTO;
 import com.example.tdd.bookstore.model.Book;
 import com.example.tdd.bookstore.service.BookService;
 
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 
 @RestController
+@SecurityRequirement(name = "bearer-key")
 public class BookController {
     
     @Autowired

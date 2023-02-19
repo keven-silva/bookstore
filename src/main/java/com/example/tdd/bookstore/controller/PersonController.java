@@ -12,9 +12,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 import com.example.tdd.bookstore.controller.dto.PersonRequestDTO;
 import com.example.tdd.bookstore.service.PersonService;
 
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 
 @RestController
+@SecurityRequirement(name = "bearer-key")
 public class PersonController {
     
     @Autowired

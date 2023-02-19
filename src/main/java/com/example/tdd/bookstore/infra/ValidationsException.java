@@ -1,4 +1,4 @@
-package com.example.tdd.bookstore.config;
+package com.example.tdd.bookstore.infra;
 
 public class ValidationsException extends RuntimeException {
     public ValidationsException(String message) {

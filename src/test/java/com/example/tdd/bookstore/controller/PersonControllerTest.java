@@ -8,6 +8,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.TestInstance.Lifecycle;
+import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -35,7 +36,7 @@ public class PersonControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
-    @Autowired
+    @Mock
     private PersonRepository personRepository;
 
     @BeforeAll
@@ -54,9 +55,7 @@ public class PersonControllerTest {
     @Test
     public void testError404PersonController() throws Exception {
         URI uri = new URI("/");
-
-        
-
+ 
         this.mockMvc.perform(
             MockMvcRequestBuilders
             .post(uri)
@@ -125,7 +124,6 @@ public class PersonControllerTest {
         this.personRepository.save(person);
         
         URI uri = new URI("/person/1");
-
         
         this.mockMvc.perform(
             MockMvcRequestBuilders

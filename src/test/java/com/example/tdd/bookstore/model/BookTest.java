@@ -1,6 +1,6 @@
 package com.example.tdd.bookstore.model;
 
-import org.junit.jupiter.api.Assertions;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -33,12 +33,14 @@ public class BookTest {
 
     @Test
     public void testInstanceOfBook() {
-        Assertions.assertInstanceOf(Book.class, book);
+        Assertions.assertThat(book)
+            .isInstanceOf(Book.class);
     }
 
     @Test
     public void testNotInstaceOfPerson() {
 
-        Assertions.assertNotEquals(Object.class, book);
+        Assertions.assertThat(book)
+            .isNotInstanceOf(Person.class);
     }
 }

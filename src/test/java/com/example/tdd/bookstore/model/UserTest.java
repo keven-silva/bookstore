@@ -10,29 +10,30 @@ import org.springframework.test.context.ActiveProfiles;
 
 @TestInstance(Lifecycle.PER_CLASS)
 @ActiveProfiles("test")
-public class PersonTest {
-    
-    private Person person;
+public class UserTest {
+        
+    private User user;
 
     @BeforeAll
     public void setUp() {
-        person = new Person();
-        person.setEmail("joao@example.com");
-        person.setName("joão");
-        person.setCpf("14551518");
+        user = new User();
+        user.setId(1L);
+        user.setUsername("John Doe");
+        user.setPassword("123456");
+        user.setEmail("john@example.com");
     }
     
     @Test
     public void testInstaceOfPerson() {
 
-        Assertions.assertThat(person)
-            .isInstanceOf(Person.class);
+        Assertions.assertThat(user)
+            .isInstanceOf(User.class);
     }
 
     @Test
     public void testNotInstaceOfPerson() {
 
-        Assertions.assertThat(person)
+        Assertions.assertThat(user)
             .isNotInstanceOf(Book.class);
     }
 }

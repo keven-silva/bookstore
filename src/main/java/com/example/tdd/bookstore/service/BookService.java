@@ -6,12 +6,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.tdd.bookstore.repository.BookRepository;
-import com.example.tdd.bookstore.repository.PersonRepository;
 
 import jakarta.transaction.Transactional;
 
-import com.example.tdd.bookstore.config.ValidationsException;
 import com.example.tdd.bookstore.controller.dto.BookRequestDTO;
+import com.example.tdd.bookstore.infra.ValidationsException;
 import com.example.tdd.bookstore.model.Book;
 import com.example.tdd.bookstore.model.Person;
 
@@ -22,7 +21,7 @@ public class BookService {
     private BookRepository bookRepository;
 
     @Autowired
-    private PersonRepository personRepository;
+    private PersonService personService;
 
     public List<Book> getAllBooks() {
         return this.bookRepository.findAll();
@@ -55,7 +54,7 @@ public class BookService {
         if(bookRequestDTO.personRequestDTO() == null){
             book.setPerson(null);
         }else {
-            Person person = this.personRepository.findByCpf(bookRequestDTO.personRequestDTO().cpf()).get();
+            Person person = this.personService.getPersonCpf(bookRequestDTO.personRequestDTO().cpf());
             book.setPerson(person);
         }
         

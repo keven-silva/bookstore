@@ -10,13 +10,13 @@ import com.example.tdd.bookstore.model.Person;
 public interface PersonRepository extends JpaRepository<Person, Long>{
     public List<Person> findAll();
 
-    public Person findById(int id);
+    public Optional<Person> findById(Long id);
 
     public Optional<Person> findByCpf(String cpf);
 
     public Person findByName(String name);
 
-    public void deleteById(int id);
+    public void deleteById(Long id);
 
     public void deleteByName(String name);
 }

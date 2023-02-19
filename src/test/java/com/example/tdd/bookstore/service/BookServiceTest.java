@@ -2,6 +2,8 @@ package com.example.tdd.bookstore.service;
 
 import static org.mockito.Mockito.when;
 
+import java.util.List;
+
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -9,7 +11,7 @@ import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.TestInstance.Lifecycle;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.mockito.Spy;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
@@ -22,7 +24,7 @@ import com.example.tdd.bookstore.repository.BookRepository;
 
 @SpringBootTest
 @TestInstance(Lifecycle.PER_CLASS)
-// @ActiveProfiles("test")
+@ActiveProfiles("test")
 public class BookServiceTest {
     
     Book book;
@@ -33,12 +35,13 @@ public class BookServiceTest {
 
     @Mock
     private BookRepository bookRepository;
-  
+
+    @Mock
+    private PersonService personService;
+    
+    @Spy
     @InjectMocks
     private BookService bookService;
-
-    @InjectMocks
-    private PersonService personService;
 
     @BeforeAll
     public void seUp() {
@@ -49,27 +52,26 @@ public class BookServiceTest {
         person.setName("Book Service");
         person.setCpf("14555551518");
 
-        // this.personService.save(person);
-
         book = new Book();
+        book.setId(1L);
         book.setTitle("Harry Potter");
         book.setAuthor("J.K. Rowling");
         book.setStatus(BookStatusEnum.UNBORROWED);
         
-        // this.bookService.save(book);
     }
 
     @Test
-    public void testGetNullPersonByName() {
+    public void testGetNullBookByTitle() {
         String title = "Anjos e Demônios";
 
         when(this.bookRepository.findByTitle(title)).thenReturn(null);
-
-        Assertions.assertThat(this.bookService.getBookByTitle(title)).isNull();
+        
+        Assertions.assertThat(this.bookService.getBookByTitle(title))
+            .isNull();
     }
 
     @Test
-    public void testGetPersonByName() {
+    public void testGetBookByTitle() {
         String title = "Harry Potter";
 
         when(this.bookRepository.findByTitle(title)).thenReturn(book);
@@ -78,7 +80,7 @@ public class BookServiceTest {
     }
 
     @Test
-    public void testNotNullRegisterBook() {
+    public void testRegisterBook() {
 
         Book bookTest = new Book();
         bookTest.setId(1L);
@@ -99,71 +101,60 @@ public class BookServiceTest {
             PersonRequestDTO
         );
 
-        when(this.bookRepository.save(book)).thenReturn(bookTest);
+        when(this.bookService.registerBook(bookRequestDTO))
+            .thenReturn(bookTest);
 
-        Assertions.assertThat(this.bookService.registerBook(bookRequestDTO)).isNull();
+        Assertions.assertThat(this.bookService.registerBook(bookRequestDTO))
+            .isInstanceOf(Book.class);
     }
 
-    // @Test
-    // public void testInstanceOfCreateBook() {
-    //     PersonRequestDTO = new PersonRequestDTO(
-    //         "Francisco",
-    //         person.getEmail(),
-    //         "21111151112"
-    //     );
+    @Test
+    public void testGetAllBooks() {
+        when(this.bookRepository.findAll())
+            .thenReturn(List.of(book));
+        
+        Assertions.assertThat(this.bookService.getAllBooks())
+            .isNotNull();
+    }
 
-    //     bookRequestDTO = new BookRequestDTO(
-    //         "Harry Potter e a pedra filosofal",
-    //         book.getAuthor(),
-    //         book.getStatus(),
-    //         PersonRequestDTO
-    //     );
+    @Test
+    public void testInstanceOfUpdateBook() {
+        PersonRequestDTO = new PersonRequestDTO(
+            "Francisco",
+            person.getEmail(),
+            "21111151112"
+        );
 
-    //     Assertions.assertInstanceOf(Book.class ,this.bookService.registerBook(bookRequestDTO));
-    // }
+        bookRequestDTO = new BookRequestDTO(
+            "Harry Potter e  o calice de fogo",
+            book.getAuthor(),
+            book.getStatus(),
+            PersonRequestDTO
+        );
 
-    // @Test
-    // public void testNullUpdateBook() {
-    //     PersonRequestDTO = new PersonRequestDTO(
-    //         "Francisco",
-    //         person.getEmail(),
-    //         "21111151112"
-    //     );
+        Long id = book.getId();
+        String cpf = "21111151112";
 
-    //     bookRequestDTO = new BookRequestDTO(
-    //         "Harry Potter e  o calice de fogo",
-    //         book.getAuthor(),
-    //         book.getStatus(),
-    //         PersonRequestDTO
-    //     );
+        when(this.personService.getPersonCpf(cpf))
+            .thenReturn(person);
 
-    //     Assertions.assertEquals(null, this.bookService.updateBook(0L, bookRequestDTO));
-    // }
+        when(this.bookRepository.existsById(book.getId()))
+            .thenReturn(true);
+        
+        when(this.bookService.updateBook(id, bookRequestDTO))
+            .thenReturn(book);
 
-    // @Test
-    // public void testInstanceofUpdateBook() {
-    //     PersonRequestDTO = new PersonRequestDTO(
-    //         "Francisco",
-    //         person.getEmail(),
-    //         "21111151112"
-    //     );
+        Assertions.assertThat(this.bookService.updateBook(id, bookRequestDTO))
+            .isInstanceOf(Book.class);
+    }
 
-    //     bookRequestDTO = new BookRequestDTO(
-    //         "Harry Potter",
-    //         book.getAuthor(),
-    //         book.getStatus(),
-    //         null
-    //     );
+    @Test
+    public void testDeleteBook() {
+        Long id = book.getId();
+        this.bookService.save(book);
 
-    //     Assertions.assertInstanceOf(Book.class, this.bookService.updateBook(book.getId(), bookRequestDTO));
-    // }
-
-    // @Test
-    // public void testDeleteBook() {
-    //     book.setId(2L);
-    //     this.bookService.save(book);
-
-    //     this.bookService.deleteBook(2L);
-    //     Assertions.assertEquals(false, this.bookRepository.existsById(2L));
-    // }
+        this.bookService.deleteBook(id);
+        Assertions.assertThat(this.bookRepository.existsById(id))
+            .isFalse();
+    }
 }

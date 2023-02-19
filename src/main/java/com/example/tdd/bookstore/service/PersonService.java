@@ -5,10 +5,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.tdd.bookstore.controller.dto.PersonRequestDTO;
+import com.example.tdd.bookstore.infra.ValidationsException;
 import com.example.tdd.bookstore.model.Person;
 import com.example.tdd.bookstore.repository.PersonRepository;
-
-import com.example.tdd.bookstore.config.ValidationsException;
 
 import java.util.List;
 
@@ -29,6 +28,10 @@ public class PersonService {
         return this.personRepository.findByName(name);
     }
 
+    public Person getPersonCpf(String cpf) {
+        return this.personRepository.findByCpf(cpf).get();
+    }
+
     public Person registerPerson(PersonRequestDTO personRequestDTO) {
         Person person = new Person(personRequestDTO);
         return this.save(person);
@@ -39,7 +42,6 @@ public class PersonService {
     }
 
     public Person updatePerson(Long personId, PersonRequestDTO personRequestDTO) {
-        List<Person> teste = this.getAllPersons();
         boolean personExist = this.personRepository.existsById(personId);
 
         if(!personExist) {

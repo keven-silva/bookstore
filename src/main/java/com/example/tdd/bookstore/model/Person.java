@@ -11,7 +11,7 @@ import com.example.tdd.bookstore.controller.dto.PersonRequestDTO;
 @Entity
 @Getter @Setter
 @NoArgsConstructor @AllArgsConstructor
-@Table(name = "person")
+@Table(name = "persons")
 public class Person {
 
     @Id

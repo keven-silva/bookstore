@@ -11,6 +11,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
+import org.mockito.Mock;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
@@ -42,7 +43,7 @@ public class BookControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
-    @Autowired
+    @Mock
     private BookRepository bookRepository;
 
     @BeforeAll
@@ -127,6 +128,8 @@ public class BookControllerTest {
     public void testUpdateBookController() throws Exception {
         URI uri = new URI("/book/1");
 
+        this.bookRepository.save(book);
+        
         gson = new Gson();
 
         String json = gson.toJson(bookCreateDTO);
