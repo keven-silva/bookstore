@@ -14,8 +14,3 @@ spring:
         properties:
             hibernate: 
                 show_sql: true
-
-api:
-    security:
-        token:
-            secret: ${SECRET_KEY_JWT:"123456"}

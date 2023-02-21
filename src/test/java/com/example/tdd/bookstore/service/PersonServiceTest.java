@@ -7,7 +7,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Spy;
 import org.springframework.boot.test.context.SpringBootTest;
-
 import org.springframework.test.context.ActiveProfiles;
 
 import com.example.tdd.bookstore.controller.dto.PersonRequestDTO;
@@ -46,17 +45,17 @@ public class PersonServiceTest {
     }
     
     @Test
-    public void testGetNullPersonByName() {
+    public void testGetNullPersonByName() throws Exception {
         String name = "teste";
 
-        when(this.personRepository.findByName(name)).thenReturn(null);
+        when(this.personService.getPersonName(name)).thenReturn(null);
 
         Assertions.assertThat(this.personService.getPersonName(name))
             .isNull();
     }
     
     @Test
-    public void testInstaceofPerson() {
+    public void testInstaceofPerson() throws Exception {
         String name = person.getName();
 
         when(this.personRepository.findByName(name)).thenReturn(person);
@@ -66,7 +65,7 @@ public class PersonServiceTest {
     }
     
     @Test
-    public void testRegisterPerson() {
+    public void testRegisterPerson() throws Exception {
         personDTO = new PersonRequestDTO(
             "Person Service",
             person.getEmail(),
@@ -80,7 +79,7 @@ public class PersonServiceTest {
     }
 
     @Test
-    public void testGetAllPersons() {
+    public void testGetAllPersons() throws Exception {
         when(this.personRepository.findAll()).thenReturn(List.of(person));
 
         Assertions.assertThat(this.personService.getAllPersons())
@@ -88,7 +87,7 @@ public class PersonServiceTest {
     }
     
     @Test
-    public void testDeletePerson() {
+    public void testDeletePerson() throws Exception {
         this.personService.save(person);
         this.personService.deletePerson(2L);
 

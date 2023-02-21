@@ -10,7 +10,7 @@ import com.example.tdd.bookstore.repository.BookRepository;
 import jakarta.transaction.Transactional;
 
 import com.example.tdd.bookstore.controller.dto.BookRequestDTO;
-import com.example.tdd.bookstore.infra.ValidationsException;
+import com.example.tdd.bookstore.infra.exceptions.ValidationsException;
 import com.example.tdd.bookstore.model.Book;
 import com.example.tdd.bookstore.model.Person;
 

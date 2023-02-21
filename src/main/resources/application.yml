@@ -1,3 +1,7 @@
+api:
+    security:
+        token:
+            secret: ${SECRET_KEY_JWT:"123456"}
 
 spring:
     profiles:

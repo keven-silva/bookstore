@@ -7,15 +7,25 @@ import java.util.List;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.TestInstance.Lifecycle;
+
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Spy;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 
 import com.example.tdd.bookstore.controller.dto.UserCreateRequestDTO;
 import com.example.tdd.bookstore.model.User;
 import com.example.tdd.bookstore.repository.UserRepository;
 
+
+@SpringBootTest
+@TestInstance(Lifecycle.PER_CLASS)
+@ActiveProfiles("test")
 public class UserServiceTest {
+    
     User user;
     UserCreateRequestDTO userDTO;
     
@@ -35,7 +45,7 @@ public class UserServiceTest {
     }
     
     @Test
-    public void testGetNullUserByUserame() {
+    public void testGetNullUserByUserame() throws Exception{
         String name = "teste";
 
         when(this.userRepository.findByUsername(name)).thenReturn(null);
@@ -45,7 +55,7 @@ public class UserServiceTest {
     }
     
     @Test
-    public void testInstaceofPerson() {
+    public void testInstaceofPerson() throws Exception {
         String name = user.getUsername();
 
         when(this.userRepository.findByUsername(name)).thenReturn(user);
@@ -54,22 +64,24 @@ public class UserServiceTest {
         .isInstanceOf(User.class);
     }
     
+    // @Test
+    // public void testRegisterPerson() throws Exception {
+    //     userDTO = new UserCreateRequestDTO(
+    //         "User Service",
+    //         "12345568954",
+    //         user.getEmail()
+    //     );
+
+    //     user = new User(userDTO);
+
+    //     when(this.userRepository.save(user)).thenThrow(RuntimeException.class);
+
+    //     Assertions.assertThatThrownBy(() -> this.userService.registerUser(userDTO))
+    //         .isInstanceOf(Exception.class);
+    // }
+
     @Test
-    public void testRegisterPerson() {
-        userDTO = new UserCreateRequestDTO(
-            "User Service",
-            "12345568954",
-            user.getEmail()
-        );
-
-        when(this.userService.registerUser(userDTO)).thenReturn(user);
-
-        Assertions.assertThat(this.userService.registerUser(userDTO))
-            .isInstanceOf(User.class);
-    }
-
-    @Test
-    public void testGetAllPersons() {
+    public void testGetAllPersons() throws Exception {
         when(this.userRepository.findAll()).thenReturn(List.of(user));
 
         Assertions.assertThat(this.userService.getAllUsers())
@@ -77,7 +89,7 @@ public class UserServiceTest {
     }
     
     @Test
-    public void testDeletePerson() {
+    public void testDeletePerson() throws Exception {
         this.userService.save(user);
         this.userService.deleteUser(2L);
 

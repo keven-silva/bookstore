@@ -8,21 +8,22 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import jakarta.persistence.EntityNotFoundException;
 
+
 @RestControllerAdvice
 public class ErrosValidator {
     @ExceptionHandler(EntityNotFoundException.class)
-    public ResponseEntity<Object> tratarErro404() {
+    public ResponseEntity<Object> handleError404() {
         return ResponseEntity.notFound().build();
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<Object> tratarErro400(MethodArgumentNotValidException ex) {
+    public ResponseEntity<Object> handleError400(MethodArgumentNotValidException ex) {
         var erros = ex.getFieldErrors();
-        return ResponseEntity.badRequest().body(erros.stream().map(DadosErroValidacao::new).toList());
+        return ResponseEntity.badRequest().body(erros.stream().map(ValidationErrorData::new).toList());
     }
 
-    private record DadosErroValidacao(String campo, String mensagem) {
-        public DadosErroValidacao(FieldError erro) {
+    private record ValidationErrorData(String field, String mensage) {
+        public ValidationErrorData(FieldError erro) {
             this(erro.getField(), erro.getDefaultMessage());
         }
     }

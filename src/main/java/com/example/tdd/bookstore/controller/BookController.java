@@ -1,10 +1,11 @@
 package com.example.tdd.bookstore.controller;
 
+import java.net.URI;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.http.HttpStatus;
+import org.springframework.web.util.UriComponentsBuilder;
 import org.springframework.http.ResponseEntity;
 
 import com.example.tdd.bookstore.controller.dto.BookRequestDTO;
@@ -14,6 +15,7 @@ import com.example.tdd.bookstore.service.BookService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 
+
 @RestController
 @SecurityRequirement(name = "bearer-key")
 public class BookController {
@@ -22,26 +24,28 @@ public class BookController {
     private BookService bookService;
 
     @GetMapping("/books")
-    public List<Book> getAllBooks() {
-        return this.bookService.getAllBooks();
+    public ResponseEntity<List<Book>> getAllBooks() {
+        return ResponseEntity.ok().body(this.bookService.getAllBooks());
     }
 
     @PostMapping("/book")
-    public ResponseEntity<Object> registerBook(@RequestBody @Valid BookRequestDTO book) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(this.bookService.registerBook(book));
+    public ResponseEntity<BookRequestDTO> registerBook(@RequestBody @Valid BookRequestDTO bookRequestDTO, UriComponentsBuilder uriComponetsBuilder) {
+        Book book = new Book(bookRequestDTO);
+        this.bookService.registerBook(bookRequestDTO);
+
+        URI uri = uriComponetsBuilder.path("/book/{id}").buildAndExpand(book.getId()).toUri();
+        
+        return ResponseEntity.created(uri).body(new BookRequestDTO(book));
     }
 
     @PutMapping("/book/{id}")
-    public ResponseEntity<Object> update(@PathVariable Long id, @RequestBody @Valid BookRequestDTO book) {
-        return ResponseEntity
-            .status(HttpStatus.OK)
-            .body(
-                this.bookService.updateBook(id, book)
-            );
+    public ResponseEntity<Book> update(@PathVariable Long id, @RequestBody @Valid BookRequestDTO book) {
+        return ResponseEntity.ok().body(this.bookService.updateBook(id, book));
     }
 
     @DeleteMapping("/book/{id}")
-    public void delete(@PathVariable Long id) {
+    public ResponseEntity<Book> delete(@PathVariable Long id) {
         this.bookService.deleteBook(id);
+        return ResponseEntity.noContent().build();
     }
 }

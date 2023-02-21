@@ -7,7 +7,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import com.example.tdd.bookstore.controller.dto.UserCreateRequestDTO;
-import com.example.tdd.bookstore.infra.ValidationsException;
+import com.example.tdd.bookstore.infra.exceptions.ValidationsException;
 import com.example.tdd.bookstore.model.User;
 import com.example.tdd.bookstore.repository.UserRepository;
 
@@ -19,8 +19,8 @@ public class UserService {
     private UserRepository userRepository;
 
     @Transactional
-    public User save(User person) {
-        return this.userRepository.save(person);
+    public User save(User user) {
+        return this.userRepository.save(user);
     }
 
     public UserDetails getUser(String username) {

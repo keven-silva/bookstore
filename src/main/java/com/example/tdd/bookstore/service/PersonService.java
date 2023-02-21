@@ -5,7 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.tdd.bookstore.controller.dto.PersonRequestDTO;
-import com.example.tdd.bookstore.infra.ValidationsException;
+import com.example.tdd.bookstore.infra.exceptions.ValidationsException;
 import com.example.tdd.bookstore.model.Person;
 import com.example.tdd.bookstore.repository.PersonRepository;
 

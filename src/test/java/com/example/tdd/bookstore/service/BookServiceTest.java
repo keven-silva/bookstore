@@ -61,7 +61,7 @@ public class BookServiceTest {
     }
 
     @Test
-    public void testGetNullBookByTitle() {
+    public void testGetNullBookByTitle() throws Exception {
         String title = "Anjos e Demônios";
 
         when(this.bookRepository.findByTitle(title)).thenReturn(null);
@@ -71,7 +71,7 @@ public class BookServiceTest {
     }
 
     @Test
-    public void testGetBookByTitle() {
+    public void testGetBookByTitle() throws Exception {
         String title = "Harry Potter";
 
         when(this.bookRepository.findByTitle(title)).thenReturn(book);
@@ -80,7 +80,7 @@ public class BookServiceTest {
     }
 
     @Test
-    public void testRegisterBook() {
+    public void testRegisterBook() throws Exception {
 
         Book bookTest = new Book();
         bookTest.setId(1L);
@@ -109,7 +109,7 @@ public class BookServiceTest {
     }
 
     @Test
-    public void testGetAllBooks() {
+    public void testGetAllBooks() throws Exception {
         when(this.bookRepository.findAll())
             .thenReturn(List.of(book));
         
@@ -118,7 +118,7 @@ public class BookServiceTest {
     }
 
     @Test
-    public void testInstanceOfUpdateBook() {
+    public void testInstanceOfUpdateBook() throws Exception {
         PersonRequestDTO = new PersonRequestDTO(
             "Francisco",
             person.getEmail(),
@@ -149,7 +149,7 @@ public class BookServiceTest {
     }
 
     @Test
-    public void testDeleteBook() {
+    public void testDeleteBook() throws Exception {
         Long id = book.getId();
         this.bookService.save(book);
 

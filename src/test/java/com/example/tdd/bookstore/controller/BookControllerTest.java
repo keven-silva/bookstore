@@ -75,6 +75,19 @@ public class BookControllerTest {
             // PersonRequestDTO
         );
     }
+    @Test
+    public void testErro403BookController() throws Exception {
+        URI uri = new URI("/books");
+
+        this.mockMvc.perform(
+            MockMvcRequestBuilders
+            .get(uri))
+        .andExpect(
+            MockMvcResultMatchers
+            .status()
+            .is(403)
+        );
+    }
 
     @Test
     public void testError404BookController() throws Exception {

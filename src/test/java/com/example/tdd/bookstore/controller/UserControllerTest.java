@@ -4,11 +4,13 @@
 
 // import com.google.gson.Gson;
 
+// import org.assertj.core.api.Assertions;
 // import org.junit.jupiter.api.BeforeAll;
 // import org.junit.jupiter.api.Test;
 // import org.junit.jupiter.api.TestInstance;
 // import org.junit.jupiter.api.TestInstance.Lifecycle;
 // import org.mockito.Mock;
+// import org.mockito.Spy;
 // import org.springframework.beans.factory.annotation.Autowired;
 // import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 // import org.springframework.boot.test.context.SpringBootTest;
@@ -20,6 +22,7 @@
 
 // import com.example.tdd.bookstore.repository.UserRepository;
 // import com.example.tdd.bookstore.model.User;
+// // import com.example.tdd.bookstore.infra.security.TokenService;
 
 // import com.example.tdd.bookstore.controller.dto.UserCreateRequestDTO;
 
@@ -33,10 +36,15 @@
 //     private  Gson gson;
 //     private String json;
 
+//     private User user;
+
+//     // @Autowired
+//     // private TokenService tokenService;
+
 //     @Autowired
 //     private MockMvc mockMvc;
 
-//     @Mock
+//     @Spy
 //     private UserRepository userRepository;
 
 //     @BeforeAll
@@ -48,9 +56,40 @@
 //             "teste01",
 //             "john.doe@example.com"
 //         );
+
+//         this.user = new User(userRequestDTO);
         
 //        json = gson.toJson(userRequestDTO);
 //     }
+
+//     // @Test
+//     // public void shouldNotAllowAccessToUnauthenticatedUsers() throws Exception {
+//     //     mockMvc.perform(
+//     //         MockMvcRequestBuilders
+//     //             .get("/test"))
+//     //         .andExpect(
+//     //             MockMvcResultMatchers
+//     //             .status()
+//     //             .isForbidden()
+//     //         );
+//     // }
+
+//     // @Test
+//     // public void shouldGenerateAuthToken() throws Exception {
+//     //     String token = tokenService.generateToken(user);
+
+//     //     mockMvc.perform(
+//     //         MockMvcRequestBuilders
+//     //             .get("/test")
+//     //             .header("Authorization", token))
+//     //         .andExpect(
+//     //             MockMvcResultMatchers
+//     //             .status()
+//     //             .isOk());
+        
+//     //     Assertions.assertThat(token).isNotNull();
+//     // }
+
 
 //     @Test
 //     public void testError404PersonController() throws Exception {
@@ -116,11 +155,13 @@
 
 //     @Test
 //     public void testDeletePersonController() throws Exception {
-//         User user = new User(
+//         UserCreateRequestDTO userDTO = new UserCreateRequestDTO(
 //             "Alberto",
 //             "14551518",
 //             "@example.com"
 //         );
+
+//         User user = new User(userDTO);
 
 //         this.userRepository.save(user);
         

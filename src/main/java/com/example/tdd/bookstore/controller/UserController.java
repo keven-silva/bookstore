@@ -1,12 +1,14 @@
 package com.example.tdd.bookstore.controller;
 
+import java.net.URI;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import com.example.tdd.bookstore.controller.dto.TokenReponseDTO;
 import com.example.tdd.bookstore.controller.dto.UserCreateRequestDTO;
@@ -15,12 +17,12 @@ import com.example.tdd.bookstore.infra.security.TokenService;
 import com.example.tdd.bookstore.model.User;
 import com.example.tdd.bookstore.service.UserService;
 
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import org.springframework.web.bind.annotation.RequestBody;
-
 
 @RestController
 public class UserController {
@@ -45,21 +47,18 @@ public class UserController {
     }
 
     @PostMapping("/user/register")
-    public ResponseEntity<Object> register(@RequestBody @Valid UserCreateRequestDTO userCreateRequestDTO) {
-        System.out.println(userCreateRequestDTO);
-        return ResponseEntity
-            .status(HttpStatus.CREATED)
-            .body(
-                this.userService.registerUser(userCreateRequestDTO)
-            );
+    public ResponseEntity<Object> register(@RequestBody @Valid UserCreateRequestDTO userCreateRequestDTO, UriComponentsBuilder uriComponentsBuilder) {
+        User user = new User(userCreateRequestDTO);
+        this.userService.registerUser(userCreateRequestDTO);
+
+        URI uri = uriComponentsBuilder.path("/user/register").buildAndExpand(user.getUsername()).toUri();
+
+        return ResponseEntity.created(uri).body(new UserCreateRequestDTO(user));
     }
     
     @GetMapping("/users")
+    @SecurityRequirement(name = "bearer-key")
     public ResponseEntity<Object> getAllPerson() {
-        return ResponseEntity
-            .status(HttpStatus.OK)
-            .body(
-                this.userService.getAllUsers()
-            );
+        return ResponseEntity.ok().body(this.userService.getAllUsers());
     }
 }
