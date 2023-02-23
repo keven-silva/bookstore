@@ -14,6 +14,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -43,7 +44,7 @@ public class User implements UserDetails{
 
     public User(UserCreateRequestDTO userCreateRequestDTO){
         this.username = userCreateRequestDTO.username();
-        this.password = userCreateRequestDTO.encodePassword();
+        this.password = userCreateRequestDTO.password();
         this.email = userCreateRequestDTO.email();
     }
 

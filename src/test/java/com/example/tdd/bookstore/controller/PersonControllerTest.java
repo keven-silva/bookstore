@@ -1,7 +1,5 @@
 package com.example.tdd.bookstore.controller;
 
-import static org.mockito.Mockito.when;
-
 import java.net.URI;
 
 import com.google.gson.Gson;
@@ -23,7 +21,6 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import com.example.tdd.bookstore.repository.UserRepository;
 import com.example.tdd.bookstore.service.PersonService;
-import com.example.tdd.bookstore.model.Person;
 import com.example.tdd.bookstore.model.User;
 import com.example.tdd.bookstore.controller.dto.PersonRequestDTO;
 import com.example.tdd.bookstore.controller.dto.UserCreateRequestDTO;
@@ -44,7 +41,7 @@ public class PersonControllerTest {
     private UserDetails userDetails;
     private User user;
 
-    private String token; 
+    private String token;
 
     @Autowired
     private MockMvc mockMvc;
@@ -83,6 +80,7 @@ public class PersonControllerTest {
             this.userRepository.delete(user);
         }
 
+        token = tokenService.generateToken(user);
         json = gson.toJson(personRequestDTO);
 
     }
@@ -181,7 +179,5 @@ public class PersonControllerTest {
             .status()
             .is(201)
             );
-
-        token = tokenService.generateToken(user);
     }
 }
