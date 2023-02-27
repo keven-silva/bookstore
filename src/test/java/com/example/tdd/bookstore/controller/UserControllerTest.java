@@ -119,6 +119,7 @@ public class UserControllerTest {
     }
 
     @Test
+    @WithMockUser
     public void testUpdateUserController() throws Exception {
         Long id = 1L;
         
