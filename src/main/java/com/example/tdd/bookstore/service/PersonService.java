@@ -2,14 +2,14 @@ package com.example.tdd.bookstore.service;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.example.tdd.bookstore.controller.dto.PersonRequestDTO;
 import com.example.tdd.bookstore.infra.exceptions.ValidationsException;
 import com.example.tdd.bookstore.model.Person;
 import com.example.tdd.bookstore.repository.PersonRepository;
-
-import java.util.List;
 
 import jakarta.transaction.Transactional;
 
@@ -37,8 +37,8 @@ public class PersonService {
         return this.save(person);
     }
 
-    public List<Person>getAllPersons() {
-        return this.personRepository.findAll();
+    public Page<Person>getAllPersons(Pageable pagination) {
+        return this.personRepository.findAll(pagination);
     }
 
     public Person updatePerson(Long personId, PersonRequestDTO personRequestDTO) {

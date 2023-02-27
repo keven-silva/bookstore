@@ -1,8 +1,8 @@
 package com.example.tdd.bookstore.service;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.example.tdd.bookstore.repository.BookRepository;
@@ -23,8 +23,8 @@ public class BookService {
     @Autowired
     private PersonService personService;
 
-    public List<Book> getAllBooks() {
-        return this.bookRepository.findAll();
+    public Page<Book> getAllBooks(Pageable pagination) {
+        return this.bookRepository.findAll(pagination);
     }
 
     @Transactional

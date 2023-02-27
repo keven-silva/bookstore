@@ -2,13 +2,15 @@ package com.example.tdd.bookstore.repository;
 
 import java.util.*;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.example.tdd.bookstore.model.Person;
 
 
 public interface PersonRepository extends JpaRepository<Person, Long>{
-    public List<Person> findAll();
+    public Page<Person> findAll(Pageable pagination);
 
     public Optional<Person> findById(Long id);
 

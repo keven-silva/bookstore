@@ -1,11 +1,14 @@
 package com.example.tdd.bookstore.controller;
 
 import java.net.URI;
-import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 import org.springframework.http.ResponseEntity;
@@ -27,8 +30,10 @@ public class BookController {
 
     @Cacheable(value = "listBooks")
     @GetMapping("/books")
-    public ResponseEntity<List<Book>> getAllBooks() {
-        return ResponseEntity.ok().body(this.bookService.getAllBooks());
+    public ResponseEntity<Page<Book>> getAllBooks(@RequestParam int page, @RequestParam int size, @RequestParam String order) {
+        Pageable pagination = PageRequest.of(page, size, Direction.ASC, order);
+
+        return ResponseEntity.ok().body(this.bookService.getAllBooks(pagination));
     }
 
     @CacheEvict(value = "listBooks", allEntries = true)

@@ -73,11 +73,13 @@ public class BookRepositoryTest {
     public void testUpdateBook() {
         String author = "j.k.Rowling";
 
-        when(this.bookRepository.findByAuthor(author)).thenReturn(book);
+        when(this.bookRepository.findByAuthor(author))
+            .thenReturn(book);
 
         book.setTitle("Harry Potter e a camara secreta");
         
-        Assertions.assertThat(this.bookRepository.findByAuthor(author).getAuthor()).isEqualTo(author);
+        Assertions.assertThat(this.bookRepository.findByAuthor(author).getAuthor())
+            .isEqualTo(author);
     }
 
     @Test

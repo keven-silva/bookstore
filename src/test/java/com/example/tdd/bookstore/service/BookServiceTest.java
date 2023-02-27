@@ -14,6 +14,9 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Spy;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.test.context.ActiveProfiles;
 
 import com.example.tdd.bookstore.controller.dto.BookRequestDTO;
@@ -114,10 +117,12 @@ public class BookServiceTest {
 
     @Test
     public void testGetAllBooks() throws Exception {
+        Pageable pagination = PageRequest.of(1, 5, Direction.ASC,"id");
+        
         when(this.bookRepository.findAll())
             .thenReturn(List.of(book));
         
-        Assertions.assertThat(this.bookService.getAllBooks())
+        Assertions.assertThat(this.bookService.getAllBooks(pagination))
             .isNotNull();
     }
 
