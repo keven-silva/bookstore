@@ -3,6 +3,8 @@ package com.example.tdd.bookstore.controller;
 import java.net.URI;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -46,6 +48,7 @@ public class UserController {
         return ResponseEntity.ok(new TokenReponseDTO(tokeJwt));
     }
 
+    @CacheEvict(value = "listUsers", allEntries = true)
     @PostMapping("/user/register")
     public ResponseEntity<Object> register(@RequestBody @Valid UserCreateRequestDTO userCreateRequestDTO, UriComponentsBuilder uriComponentsBuilder) {
         User user = new User(userCreateRequestDTO);
@@ -56,6 +59,7 @@ public class UserController {
         return ResponseEntity.created(uri).body(new UserCreateRequestDTO(user));
     }
     
+    @Cacheable(value = "listUsers")
     @GetMapping("/users")
     @SecurityRequirement(name = "bearer-key")
     public ResponseEntity<Object> getAllPerson() {
