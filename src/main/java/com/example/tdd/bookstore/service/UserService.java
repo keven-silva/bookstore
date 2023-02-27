@@ -42,7 +42,7 @@ public class UserService {
         return this.userRepository.findAll();
     }
 
-    public UserDetails updatePerson(Long userId, UserCreateRequestDTO userCreateRequestDTO) {
+    public UserDetails updateUser(Long userId, UserCreateRequestDTO userCreateRequestDTO) {
         boolean personExist = this.userRepository.existsById(userId);
 
         if(!personExist) {

@@ -6,4 +6,10 @@ The project has swagger and unit tests, in addition to having a docker file for 
 - Java 17
 - Spring Boot 4
 - Maven 4.0
-- MariaDB | Docker
+- Docker
+
+## Run docker database environment
+    docker-compose up -d build
+
+## Run application
+    mvn spring-boot:run

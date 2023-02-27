@@ -24,11 +24,11 @@ public class PersonService {
         return this.personRepository.save(person);
     }
 
-    public Person getPersonName(String name) {
+    public Person getPersonByName(String name) {
         return this.personRepository.findByName(name);
     }
 
-    public Person getPersonCpf(String cpf) {
+    public Person getPersonByCpf(String cpf) {
         return this.personRepository.findByCpf(cpf).get();
     }
 
@@ -55,7 +55,7 @@ public class PersonService {
     }
 
     @Transactional
-    public void deletePerson(Long personId)  {
+    public void deletePersonById(Long personId)  {
             this.personRepository.deleteById(personId);
     }
 }

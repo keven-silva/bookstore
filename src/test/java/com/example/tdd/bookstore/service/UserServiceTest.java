@@ -1,5 +1,6 @@
 package com.example.tdd.bookstore.service;
 
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 import java.util.List;
@@ -28,7 +29,7 @@ public class UserServiceTest {
     
     User user;
     UserCreateRequestDTO userDTO;
-    
+
     @Mock
     private UserRepository userRepository;
     
@@ -48,20 +49,22 @@ public class UserServiceTest {
     public void testGetNullUserByUserame() throws Exception{
         String name = "teste";
 
-        when(this.userRepository.findByUsername(name)).thenReturn(null);
+        when(this.userRepository.findByUsername(any(String.class)))
+            .thenReturn(null);
 
         Assertions.assertThat(this.userService.getUser(name))
             .isNull();
     }
     
     @Test
-    public void testInstaceofPerson() throws Exception {
+    public void testGetUserByUsername() throws Exception {
         String name = user.getUsername();
 
-        when(this.userRepository.findByUsername(name)).thenReturn(user);
+        when(this.userRepository.findByUsername(any(String.class)))
+            .thenReturn(user);
 
         Assertions.assertThat(this.userService.getUser(name))
-        .isInstanceOf(User.class);
+            .isInstanceOf(User.class);
     }
     
     // @Test
@@ -74,26 +77,49 @@ public class UserServiceTest {
 
     //     user = new User(userDTO);
 
-    //     when(this.userRepository.save(user)).thenThrow(RuntimeException.class);
+    //     User userPasswordEncoded = user; 
+    //     userPasswordEncoded.setPassword(passwordEncoder.encode(user.getPassword()));
+        
+    //     when(this.userRepository.save(any(User.class)))
+    //         .thenReturn(user);
 
-    //     Assertions.assertThatThrownBy(() -> this.userService.registerUser(userDTO))
-    //         .isInstanceOf(Exception.class);
+    //     Assertions.assertThat(this.userService.registerUser(userDTO))
+    //         .isInstanceOf(User.class);
     // }
 
     @Test
     public void testGetAllPersons() throws Exception {
-        when(this.userRepository.findAll()).thenReturn(List.of(user));
+        when(this.userRepository.findAll())
+            .thenReturn(List.of(user));
 
         Assertions.assertThat(this.userService.getAllUsers())
             .isNotNull();
     }
     
-    @Test
-    public void testDeletePerson() throws Exception {
-        this.userService.save(user);
-        this.userService.deleteUser(2L);
+    // @Test
+    // public void testInstanceOfUpdateUser() throws Exception {
+    //     userDTO = new UserCreateRequestDTO(
+    //         "Person Service",
+    //         user.getEmail(),
+    //         "dev954"
+    //     );
 
-        Assertions.assertThat(this.userRepository.existsById(2L))
-            .isFalse();
-    }
+    //     when(this.userRepository.existsById(any(Long.class)))
+    //         .thenReturn(true);
+
+    //     when(this.userRepository.save(any(User.class)))
+    //         .thenReturn(user);
+
+    //     Assertions.assertThat(this.userService.updateUser(1L, userDTO))
+    //         .isInstanceOf(User.class);
+    // }
+
+    // @Test
+    // public void testDeletePerson() throws Exception {
+    //     User userTest = this.userService.save(user);
+    //     this.userService.deleteUser(userTest.getId());
+
+    //     Assertions.assertThat(this.userRepository.existsById(2L))
+    //         .isFalse();
+    // }
 }

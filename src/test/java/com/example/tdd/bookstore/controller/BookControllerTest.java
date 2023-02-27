@@ -14,6 +14,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.mockito.Mock;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+import org.springframework.security.test.context.support.WithMockUser;
 
 import com.example.tdd.bookstore.controller.dto.BookRequestDTO;
 import com.example.tdd.bookstore.controller.dto.PersonRequestDTO;
@@ -90,6 +91,7 @@ public class BookControllerTest {
     }
 
     @Test
+    @WithMockUser
     public void testError404BookController() throws Exception {
         URI uri = new URI("/test");
 
@@ -104,7 +106,8 @@ public class BookControllerTest {
     }
 
     @Test
-    public void testBookController() throws Exception {
+    @WithMockUser
+    public void testGetAllBookController() throws Exception {
         URI uri = new URI("/books");
 
         this.mockMvc.perform(
@@ -118,6 +121,7 @@ public class BookControllerTest {
     }
 
     @Test
+    @WithMockUser
     public void testRegisterBookController() throws Exception {
         URI uri = new URI("/book");
 
@@ -138,6 +142,7 @@ public class BookControllerTest {
     }
 
     @Test
+    @WithMockUser
     public void testUpdateBookController() throws Exception {
         URI uri = new URI("/book/1");
 
@@ -161,6 +166,7 @@ public class BookControllerTest {
 
      
     @Test
+    @WithMockUser
     public void testDeleteBookController() throws Exception {
         Book bookDelete = new Book();
         bookDelete.setTitle("Harry Potter teste");

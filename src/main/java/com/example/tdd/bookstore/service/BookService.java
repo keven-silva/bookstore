@@ -54,7 +54,7 @@ public class BookService {
         if(bookRequestDTO.personRequestDTO() == null){
             book.setPerson(null);
         }else {
-            Person person = this.personService.getPersonCpf(bookRequestDTO.personRequestDTO().cpf());
+            Person person = this.personService.getPersonByCpf(bookRequestDTO.personRequestDTO().cpf());
             book.setPerson(person);
         }
         

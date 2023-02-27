@@ -1,6 +1,7 @@
 package com.example.tdd.bookstore.service;
 
 import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.any;
 
 import java.util.List;
 
@@ -64,7 +65,8 @@ public class BookServiceTest {
     public void testGetNullBookByTitle() throws Exception {
         String title = "Anjos e Demônios";
 
-        when(this.bookRepository.findByTitle(title)).thenReturn(null);
+        when(this.bookRepository.findByTitle(any(String.class)))
+            .thenReturn(null);
         
         Assertions.assertThat(this.bookService.getBookByTitle(title))
             .isNull();
@@ -74,9 +76,11 @@ public class BookServiceTest {
     public void testGetBookByTitle() throws Exception {
         String title = "Harry Potter";
 
-        when(this.bookRepository.findByTitle(title)).thenReturn(book);
+        when(this.bookRepository.findByTitle(any(String.class)))
+            .thenReturn(book);
 
-        Assertions.assertThat(this.bookService.getBookByTitle(title)).isInstanceOf(Book.class);
+        Assertions.assertThat(this.bookService.getBookByTitle(title))
+            .isInstanceOf(Book.class);
     }
 
     @Test
@@ -101,7 +105,7 @@ public class BookServiceTest {
             PersonRequestDTO
         );
 
-        when(this.bookService.registerBook(bookRequestDTO))
+        when(this.bookRepository.save(any(Book.class)))
             .thenReturn(bookTest);
 
         Assertions.assertThat(this.bookService.registerBook(bookRequestDTO))
@@ -133,15 +137,14 @@ public class BookServiceTest {
         );
 
         Long id = book.getId();
-        String cpf = "21111151112";
 
-        when(this.personService.getPersonCpf(cpf))
+        when(this.personService.getPersonByCpf(any(String.class)))
             .thenReturn(person);
 
-        when(this.bookRepository.existsById(book.getId()))
+        when(this.bookRepository.existsById(any(Long.class)))
             .thenReturn(true);
         
-        when(this.bookService.updateBook(id, bookRequestDTO))
+        when(this.bookRepository.save(any(Book.class)))
             .thenReturn(book);
 
         Assertions.assertThat(this.bookService.updateBook(id, bookRequestDTO))

@@ -13,6 +13,7 @@ import com.example.tdd.bookstore.controller.dto.PersonRequestDTO;
 import com.example.tdd.bookstore.model.Person;
 import com.example.tdd.bookstore.repository.PersonRepository;
 
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 import java.util.List;
@@ -39,6 +40,7 @@ public class PersonServiceTest {
     @BeforeAll
     public void setUp() {
         person = new Person();
+        person.setId(1L);
         person.setEmail("@example.com");
         person.setName("Alberto");
         person.setCpf("14551518");
@@ -48,20 +50,22 @@ public class PersonServiceTest {
     public void testGetNullPersonByName() throws Exception {
         String name = "teste";
 
-        when(this.personService.getPersonName(name)).thenReturn(null);
+        when(this.personService.getPersonByName(any(String.class)))
+            .thenReturn(null);
 
-        Assertions.assertThat(this.personService.getPersonName(name))
+        Assertions.assertThat(this.personService.getPersonByName(name))
             .isNull();
     }
     
     @Test
-    public void testInstaceofPerson() throws Exception {
+    public void testGetPersonByName() throws Exception {
         String name = person.getName();
 
-        when(this.personRepository.findByName(name)).thenReturn(person);
+        when(this.personRepository.findByName(any(String.class)))
+            .thenReturn(person);
 
-        Assertions.assertThat(this.personService.getPersonName(name))
-        .isInstanceOf(Person.class);
+        Assertions.assertThat(this.personService.getPersonByName(name))
+            .isInstanceOf(Person.class);
     }
     
     @Test
@@ -72,7 +76,8 @@ public class PersonServiceTest {
             "12345568954"
         );
 
-        when(this.personService.registerPerson(personDTO)).thenReturn(person);
+        when(this.personRepository.save(any(Person.class)))
+            .thenReturn(person);
 
         Assertions.assertThat(this.personService.registerPerson(personDTO))
             .isInstanceOf(Person.class);
@@ -80,16 +85,35 @@ public class PersonServiceTest {
 
     @Test
     public void testGetAllPersons() throws Exception {
-        when(this.personRepository.findAll()).thenReturn(List.of(person));
+        when(this.personRepository.findAll())
+            .thenReturn(List.of(person));
 
         Assertions.assertThat(this.personService.getAllPersons())
             .isNotNull();
+    }
+
+    @Test
+    public void testInstanceOfUpdatePerson() throws Exception {
+        personDTO = new PersonRequestDTO(
+            "Person Service",
+            person.getEmail(),
+            "12345568954"
+        );
+
+        when(this.personRepository.existsById(any(Long.class)))
+            .thenReturn(true);
+
+        when(this.personRepository.save(any(Person.class)))
+            .thenReturn(person);
+
+        Assertions.assertThat(this.personService.updatePerson(1L, personDTO))
+            .isInstanceOf(Person.class);
     }
     
     @Test
     public void testDeletePerson() throws Exception {
         this.personService.save(person);
-        this.personService.deletePerson(2L);
+        this.personService.deletePersonById(2L);
 
         Assertions.assertThat(this.personRepository.existsById(2L))
             .isFalse();

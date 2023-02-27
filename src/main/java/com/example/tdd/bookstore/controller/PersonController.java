@@ -28,7 +28,7 @@ public class PersonController {
     private PersonService personService;
 
     @GetMapping("/persons")
-    public ResponseEntity<List<Person>> getAllPerson() {
+    public ResponseEntity<List<Person>> getAllPersons() {
         return ResponseEntity.ok().body(this.personService.getAllPersons());
     }
 
@@ -49,7 +49,7 @@ public class PersonController {
 
     @DeleteMapping("/person/{id}")
     public ResponseEntity<Object> delete(@PathVariable Long id) {
-        this.personService.deletePerson(id);
+        this.personService.deletePersonById(id);
 
         return ResponseEntity.noContent().build();
     }
