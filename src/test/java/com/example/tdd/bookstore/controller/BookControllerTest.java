@@ -112,7 +112,9 @@ public class BookControllerTest {
 
         this.mockMvc.perform(
             MockMvcRequestBuilders
-            .get(uri))
+            .get(uri)
+            .param("page", "1")
+            .param("size", "10"))
         .andExpect(
             MockMvcResultMatchers
             .status()

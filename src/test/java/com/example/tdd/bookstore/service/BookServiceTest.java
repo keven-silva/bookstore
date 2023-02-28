@@ -2,6 +2,7 @@ package com.example.tdd.bookstore.service;
 
 import static org.mockito.Mockito.when;
 import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.mock;
 
 import java.util.List;
 
@@ -14,6 +15,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Spy;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort.Direction;
@@ -118,9 +120,10 @@ public class BookServiceTest {
     @Test
     public void testGetAllBooks() throws Exception {
         Pageable pagination = PageRequest.of(1, 5, Direction.ASC,"id");
+        Page<Book> bookPage = mock(Page.class);
         
-        when(this.bookRepository.findAll())
-            .thenReturn(List.of(book));
+        when(this.bookRepository.findAll(any(Pageable.class)))
+            .thenReturn(bookPage);
         
         Assertions.assertThat(this.bookService.getAllBooks(pagination))
             .isNotNull();

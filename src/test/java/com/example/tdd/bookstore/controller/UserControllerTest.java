@@ -60,8 +60,8 @@ public class UserControllerTest {
         this.mockMvc.perform(
             MockMvcRequestBuilders
             .post(uri)
-                .content(json)
-                .contentType(MediaType.APPLICATION_JSON))
+            .content(json)
+            .contentType(MediaType.APPLICATION_JSON))
         .andExpect(
             MockMvcResultMatchers
             .status()
@@ -77,8 +77,8 @@ public class UserControllerTest {
         this.mockMvc.perform(
             MockMvcRequestBuilders
             .post(uri)
-                .content(json)
-                .contentType(MediaType.APPLICATION_JSON))
+            .content(json)
+            .contentType(MediaType.APPLICATION_JSON))
         .andExpect(
             MockMvcResultMatchers
             .status()
@@ -94,8 +94,8 @@ public class UserControllerTest {
         this.mockMvc.perform(
             MockMvcRequestBuilders
             .post(uri)
-                .content(json.toString())
-                .contentType(MediaType.APPLICATION_JSON))
+            .content(json.toString())
+            .contentType(MediaType.APPLICATION_JSON))
         .andExpect(
             MockMvcResultMatchers
             .status()
@@ -110,7 +110,9 @@ public class UserControllerTest {
 
         mockMvc.perform(
             MockMvcRequestBuilders
-                .get(uri))
+            .get(uri)
+            .param("page", "1")
+            .param("size", "10"))
         .andExpect(
             MockMvcResultMatchers
             .status()
@@ -127,9 +129,9 @@ public class UserControllerTest {
         
         this.mockMvc.perform(
             MockMvcRequestBuilders
-                .put(uri)
-                    .content(json.toString())
-                    .contentType(MediaType.APPLICATION_JSON))
+            .put(uri)
+            .content(json.toString())
+            .contentType(MediaType.APPLICATION_JSON))
         .andExpect(
             MockMvcResultMatchers
             .status()
@@ -156,12 +158,12 @@ public class UserControllerTest {
         
         this.mockMvc.perform(
             MockMvcRequestBuilders
-                .delete(uri)
-                .contentType(MediaType.APPLICATION_JSON))
-            .andExpect(
-                MockMvcResultMatchers
-                .status()
-                .is(200)
-            );
+            .delete(uri)
+            .contentType(MediaType.APPLICATION_JSON))
+        .andExpect(
+            MockMvcResultMatchers
+            .status()
+            .is(200)
+        );
     }
 }

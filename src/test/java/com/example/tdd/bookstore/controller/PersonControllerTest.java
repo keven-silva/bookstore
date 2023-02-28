@@ -62,12 +62,12 @@ public class PersonControllerTest {
         this.mockMvc.perform(
             MockMvcRequestBuilders
             .post(uri)
-                .content(json)
-                .contentType(MediaType.APPLICATION_JSON))
-            .andExpect(
-                MockMvcResultMatchers
-                .status()
-                .is(403)
+            .content(json)
+            .contentType(MediaType.APPLICATION_JSON))
+        .andExpect(
+            MockMvcResultMatchers
+            .status()
+            .is(403)
         );
     }
 
@@ -79,12 +79,12 @@ public class PersonControllerTest {
         this.mockMvc.perform(
             MockMvcRequestBuilders
             .post(uri)
-                .content(json)
-                .contentType(MediaType.APPLICATION_JSON))
-            .andExpect(
-                MockMvcResultMatchers
-                .status()
-                .is(404)
+            .content(json)
+            .contentType(MediaType.APPLICATION_JSON))
+        .andExpect(
+            MockMvcResultMatchers
+            .status()
+            .is(404)
         );
     }
 
@@ -95,12 +95,14 @@ public class PersonControllerTest {
         
         mockMvc.perform(
             MockMvcRequestBuilders
-            .get(uri))
-            .andExpect(
-                MockMvcResultMatchers
-                .status()
-                .is(200)
-            );
+            .get(uri)
+            .param("page", "1")
+            .param("size", "10"))
+        .andExpect(
+            MockMvcResultMatchers
+            .status()
+            .is(200)
+        );
     }
     
     @Test
@@ -130,13 +132,13 @@ public class PersonControllerTest {
         this.mockMvc.perform(
             MockMvcRequestBuilders
             .put(uri)
-                .content(json.toString())
-                .contentType(MediaType.APPLICATION_JSON))
-            .andExpect(
-                MockMvcResultMatchers
-                .status()
-                .is(200)
-            );
+            .content(json.toString())
+            .contentType(MediaType.APPLICATION_JSON))
+        .andExpect(
+            MockMvcResultMatchers
+            .status()
+            .is(200)
+        );
     }
 
     @Test
@@ -149,11 +151,11 @@ public class PersonControllerTest {
         this.mockMvc.perform(
             MockMvcRequestBuilders
             .delete(uri)
-                .contentType(MediaType.APPLICATION_JSON))
-            .andExpect(
-                MockMvcResultMatchers
-                .status()
-                .is(200)
-            );
+            .contentType(MediaType.APPLICATION_JSON))
+        .andExpect(
+            MockMvcResultMatchers
+            .status()
+            .is(200)
+        );
     }
 }
