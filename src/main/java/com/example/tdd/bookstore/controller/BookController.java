@@ -22,6 +22,7 @@ import jakarta.validation.Valid;
 
 
 @RestController
+@RequestMapping("/books")
 @SecurityRequirement(name = "bearer-key")
 public class BookController {
     
@@ -29,7 +30,7 @@ public class BookController {
     private BookService bookService;
 
     @Cacheable(value = "listBooks")
-    @GetMapping("/books")
+    @GetMapping
     public ResponseEntity<Page<Book>> getAllBooks(@RequestParam int page, @RequestParam int size, @RequestParam String order) {
         Pageable pagination = PageRequest.of(page, size, Direction.ASC, order);
 
@@ -37,24 +38,23 @@ public class BookController {
     }
 
     @CacheEvict(value = "listBooks", allEntries = true)
-    @PostMapping("/book")
+    @PostMapping
     public ResponseEntity<BookRequestDTO> registerBook(@RequestBody @Valid BookRequestDTO bookRequestDTO, UriComponentsBuilder uriComponetsBuilder) {
-        Book book = new Book(bookRequestDTO);
-        this.bookService.registerBook(bookRequestDTO);
+        Book book = this.bookService.registerBook(bookRequestDTO);
 
-        URI uri = uriComponetsBuilder.path("/book/{id}").buildAndExpand(book.getId()).toUri();
+        URI uri = uriComponetsBuilder.path("/books/{id}").buildAndExpand(book.getId()).toUri();
         
         return ResponseEntity.created(uri).body(new BookRequestDTO(book));
     }
 
     @CacheEvict(value = "listBooks", allEntries = true)
-    @PutMapping("/book/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<Book> update(@PathVariable Long id, @RequestBody @Valid BookRequestDTO book) {
         return ResponseEntity.ok().body(this.bookService.updateBook(id, book));
     }
 
     @CacheEvict(value = "listBooks", allEntries = true)
-    @DeleteMapping("/book/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<Book> delete(@PathVariable Long id) {
         this.bookService.deleteBook(id);
         return ResponseEntity.noContent().build();

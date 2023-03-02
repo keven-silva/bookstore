@@ -28,9 +28,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @RestController
+@RequestMapping("/users")
 public class UserController {
     @Autowired
     private AuthenticationManager manager;
@@ -41,7 +43,7 @@ public class UserController {
     @Autowired
     private UserService userService;
     
-    @PostMapping("/user/login")
+    @PostMapping("/login")
     public ResponseEntity<TokenReponseDTO> login(@RequestBody @Valid UserRequestDTO userRequestDTO) {
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(userRequestDTO.username(), userRequestDTO.password());
         
@@ -53,18 +55,17 @@ public class UserController {
     }
 
     @CacheEvict(value = "listUsers", allEntries = true)
-    @PostMapping("/user/register")
+    @PostMapping("/register")
     public ResponseEntity<Object> register(@RequestBody @Valid UserCreateRequestDTO userCreateRequestDTO, UriComponentsBuilder uriComponentsBuilder) {
-        User user = new User(userCreateRequestDTO);
-        this.userService.registerUser(userCreateRequestDTO);
+        User user = this.userService.registerUser(userCreateRequestDTO);
 
-        URI uri = uriComponentsBuilder.path("/user/register").buildAndExpand(user.getUsername()).toUri();
+        URI uri = uriComponentsBuilder.path("/users/register/{id}").buildAndExpand(user.getId()).toUri();
 
         return ResponseEntity.created(uri).body(new UserCreateRequestDTO(user));
     }
     
     @Cacheable(value = "listUsers")
-    @GetMapping("/users")
+    @GetMapping
     @SecurityRequirement(name = "bearer-key")
     public ResponseEntity<Object> getAllPerson(@RequestParam int page, @RequestParam int size, @RequestParam String order) {
         Pageable pagination = PageRequest.of(page, size, Direction.ASC, order);

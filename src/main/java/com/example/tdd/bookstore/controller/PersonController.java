@@ -26,6 +26,7 @@ import jakarta.validation.Valid;
 
 
 @RestController
+@RequestMapping("/persons")
 @SecurityRequirement(name = "bearer-key")
 public class PersonController {
     
@@ -33,7 +34,7 @@ public class PersonController {
     private PersonService personService;
 
     @Cacheable(value = "listPersons")
-    @GetMapping("/persons")
+    @GetMapping
     public ResponseEntity<Page<Person>> getAllPersons(@RequestParam int page, @RequestParam int size, @RequestParam String order) {
         Pageable pagination = PageRequest.of(page, size, Direction.ASC, order);
 
@@ -41,24 +42,23 @@ public class PersonController {
     }
 
     @CacheEvict(value = "listPersons", allEntries = true)
-    @PostMapping("/person")
+    @PostMapping
     public ResponseEntity<Object> save(@RequestBody @Valid PersonRequestDTO personRequestDTO, UriComponentsBuilder uriComponentsBuilder) {
-        Person person = new Person(personRequestDTO);
-        this.personService.registerPerson(personRequestDTO);
+        Person person = this.personService.registerPerson(personRequestDTO);
 
-        URI uri = uriComponentsBuilder.path("/person/{id}").buildAndExpand(person.getId()).toUri();
+        URI uri = uriComponentsBuilder.path("/persons/{id}").buildAndExpand(person.getId()).toUri();
 
         return ResponseEntity.created(uri).body(new PersonRequestDTO(person));
     }
 
     @CacheEvict(value = "listPersons", allEntries = true)
-    @PutMapping("/person/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<Object> update(@PathVariable Long id, @RequestBody @Valid PersonRequestDTO PersonRequestDTO) {
         return ResponseEntity.ok().body(this.personService.updatePerson(id, PersonRequestDTO));
     }
 
     @CacheEvict(value = "listPersons", allEntries = true)
-    @DeleteMapping("/person/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<Object> delete(@PathVariable Long id) {
         this.personService.deletePersonById(id);
 
