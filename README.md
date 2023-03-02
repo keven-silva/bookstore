@@ -15,7 +15,9 @@ The project has swagger and unit tests, in addition to having a docker file for 
 - Caching
 - Automated testings
 
-## Run docker database environment
+## Getting starter
+Run database in file docker-compose
+
     docker-compose up -d build
 
 ## Run application
