@@ -112,7 +112,8 @@ public class UserControllerTest {
             MockMvcRequestBuilders
             .get(uri)
             .param("page", "1")
-            .param("size", "10"))
+            .param("size", "10")
+            .param("order", "id"))
         .andExpect(
             MockMvcResultMatchers
             .status()
