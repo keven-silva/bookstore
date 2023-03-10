@@ -1,12 +1,12 @@
 package com.example.tdd.bookstore.model;
 
+import com.example.tdd.bookstore.controller.dto.person.PersonRequestDTO;
+
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import com.example.tdd.bookstore.controller.dto.PersonRequestDTO;
 
 @Entity
 @Getter @Setter

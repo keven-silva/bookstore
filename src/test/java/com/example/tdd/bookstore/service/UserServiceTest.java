@@ -22,7 +22,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.test.context.ActiveProfiles;
 
-import com.example.tdd.bookstore.controller.dto.UserCreateRequestDTO;
+import com.example.tdd.bookstore.controller.dto.user.UserCreateRequestDTO;
 import com.example.tdd.bookstore.model.User;
 import com.example.tdd.bookstore.repository.UserRepository;
 

@@ -1,5 +1,6 @@
 package com.example.tdd.bookstore.service;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -9,7 +10,9 @@ import com.example.tdd.bookstore.repository.BookRepository;
 
 import jakarta.transaction.Transactional;
 
-import com.example.tdd.bookstore.controller.dto.BookRequestDTO;
+import com.example.tdd.bookstore.controller.dto.book.BookRequestDTO;
+import com.example.tdd.bookstore.controller.dto.book.BookResponseDTO;
+import com.example.tdd.bookstore.controller.dto.person.PersonResponseDTO;
 import com.example.tdd.bookstore.infra.exceptions.ValidationsException;
 import com.example.tdd.bookstore.model.Book;
 import com.example.tdd.bookstore.model.Person;
@@ -21,27 +24,34 @@ public class BookService {
     private BookRepository bookRepository;
 
     @Autowired
+    private ModelMapper mapper;
+
+    @Autowired
     private PersonService personService;
 
-    public Page<Book> getAllBooks(Pageable pagination) {
-        return this.bookRepository.findAll(pagination);
+    public Page<BookResponseDTO> getAllBooks(Pageable pagination) {
+        return this.bookRepository
+            .findAll(pagination)
+            .map(p -> this.mapper.map(p, BookResponseDTO.class));
     }
 
     @Transactional
-    public Book save(Book book) {
-        return this.bookRepository.save(book);
+    public BookResponseDTO save(Book book) {
+        Book bookDTO = this.bookRepository.save(book);
+        return this.mapper.map(bookDTO, BookResponseDTO.class);
     }
 
-    public Book registerBook(BookRequestDTO bookCreateDTO) {
+    public BookResponseDTO registerBook(BookRequestDTO bookCreateDTO) {
         Book book = new Book(bookCreateDTO);
         return this.save(book);
     }
 
-    public Book getBookByTitle(String title) {
-        return this.bookRepository.findByTitle(title);
+    public BookResponseDTO getBookByTitle(String title) {
+        Book book = this.bookRepository.findByTitle(title);
+        return this.mapper.map(book, BookResponseDTO.class);
     }
 
-    public Book updateBook(Long bookId, BookRequestDTO bookRequestDTO) {
+    public BookResponseDTO updateBook(Long bookId, BookRequestDTO bookRequestDTO) {
         boolean bookExist = this.bookRepository.existsById(bookId);
 
         if(!bookExist){
@@ -54,7 +64,9 @@ public class BookService {
         if(bookRequestDTO.personRequestDTO() == null){
             book.setPerson(null);
         }else {
-            Person person = this.personService.getPersonByCpf(bookRequestDTO.personRequestDTO().cpf());
+            PersonResponseDTO personResponseDTO = this.personService.getPersonByCpf(bookRequestDTO.personRequestDTO().cpf());
+            Person person = this.mapper.map(personResponseDTO, Person.class);
+            
             book.setPerson(person);
         }
         

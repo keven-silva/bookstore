@@ -1,4 +1,4 @@
-package com.example.tdd.bookstore.controller.dto;
+package com.example.tdd.bookstore.controller.dto.user;
 
 import com.example.tdd.bookstore.model.User;
 

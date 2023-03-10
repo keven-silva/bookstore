@@ -1,5 +1,6 @@
-package com.example.tdd.bookstore.controller.dto;
+package com.example.tdd.bookstore.controller.dto.book;
 
+import com.example.tdd.bookstore.controller.dto.person.PersonRequestDTO;
 import com.example.tdd.bookstore.model.Book;
 import com.example.tdd.bookstore.model.enums.BookStatusEnum;
 
@@ -11,7 +12,6 @@ public record BookRequestDTO(
     String title,
     @NotBlank
     String author,
-    @NotBlank
     BookStatusEnum status,
     @Valid
     PersonRequestDTO personRequestDTO

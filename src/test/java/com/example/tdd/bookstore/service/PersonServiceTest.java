@@ -13,7 +13,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.test.context.ActiveProfiles;
 
-import com.example.tdd.bookstore.controller.dto.PersonRequestDTO;
+import com.example.tdd.bookstore.controller.dto.person.PersonRequestDTO;
 import com.example.tdd.bookstore.model.Person;
 import com.example.tdd.bookstore.repository.PersonRepository;
 

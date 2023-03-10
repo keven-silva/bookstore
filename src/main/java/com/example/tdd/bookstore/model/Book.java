@@ -5,8 +5,9 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import com.example.tdd.bookstore.controller.dto.book.BookRequestDTO;
 import com.example.tdd.bookstore.model.enums.BookStatusEnum;
-import com.example.tdd.bookstore.controller.dto.BookRequestDTO;
 
 @Entity
 @Getter @Setter

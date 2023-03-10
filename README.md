@@ -12,7 +12,6 @@ The project has swagger and unit tests, in addition to having a docker file for 
 - Pagination and sorting
 - Jwt token authentication
 - Swagger doc with authentication
-- Caching
 - Automated testings
 
 ## Getting starter

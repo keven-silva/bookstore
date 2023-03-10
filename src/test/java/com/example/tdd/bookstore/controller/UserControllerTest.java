@@ -19,10 +19,9 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import com.example.tdd.bookstore.repository.UserRepository;
+import com.example.tdd.bookstore.controller.dto.user.UserCreateRequestDTO;
 import com.example.tdd.bookstore.model.User;
 import org.springframework.security.test.context.support.WithMockUser;
-
-import com.example.tdd.bookstore.controller.dto.UserCreateRequestDTO;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -113,7 +112,7 @@ public class UserControllerTest {
             .get(uri)
             .param("page", "1")
             .param("size", "10")
-            .param("order", "id"))
+            .param("sort", "id"))
         .andExpect(
             MockMvcResultMatchers
             .status()
